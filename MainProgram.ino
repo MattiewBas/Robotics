@@ -17,6 +17,18 @@ void loop() {
   
 }
 
+void Linetracker() {
+  const int LT = 8;
+  const int MT = 9;
+  const int RT = 10;
+
+  pinMode(LT, INPUT);
+  pinMode(MT, INPUT);
+  pinMode(RT, INPUT);
+
+  
+}
+
 int DistanceCheck() { // Returns 0 within range whhilst 1 if far from an object.
   const int TrigPin = 13;
   const int EchoPin = 12;
