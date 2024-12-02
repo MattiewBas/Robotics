@@ -17,6 +17,13 @@ void loop() {
   
 }
 
+/*
+
+The line Tracker works by if the IR bounces (In this case, it detects) then the surface is reflective thus,
+The robot is NOT in line.
+
+*/
+
 void Linetracker() {
   const int LT = 8;
   const int MT = 9;
