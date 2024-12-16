@@ -3,7 +3,7 @@
 AUTHOR: MATTIEW BAS - ICT 2 PROGRAMMING
 BRANIACS, MAIN PROGRAM
 LAST UPDATED: 12/4/24
-VERSION: b0.6
+VERSION: b0.6.1
 
 */
 
@@ -56,8 +56,6 @@ void setup() {
   digitalWrite(in2, LOW);
   digitalWrite(in3, HIGH);
   digitalWrite(in4, LOW);
-  analogWrite(enA, 200);
-  analogWrite(enB, 200);
 
   // Line Tracker
 
@@ -65,25 +63,40 @@ void setup() {
   pinMode(MT, INPUT);
   pinMode(RT, INPUT);
   StartMillis = millis();
-  DistanceServo.write(70);
+  DistanceServo.write(90);
 }
 
 void loop() {
-  int DefaultPos = 70;
+  int DefaultPos = 90;
   int RightPos = 0;
   int LeftPos = 180;
-  int distance = DistanceCheck(); // in inches
+  // int distance = DistanceCheck(); // in inches
   unsigned long CurrentMillis = millis();
   int RightDistance;
   int LeftDistance;
-  int LeftTracker = digitalRead(LT);
-  int MiddleTracker = digitalRead(MT);
-  int RightTracker = digitalRead(RT);
   CurrentMillis = millis();
 
-  if (distance <= 12) {
+  if (digitalRead(MT) == 1) {
+    analogWrite(enA, 200);
+    analogWrite(enB, 200);
+  } else if ((digitalRead(MT) == 1) && (digitalRead(RT) == 1) && (digitalRead(LT) == 0)) {
     analogWrite(enA, 0);
-    analogWrite(enB, 0); // stop motors temporarily for distance check
+    analogWrite(enB, 200);
+    delay(30);
+    analogWrite(enA, 200);
+    analogWrite(enB, 200);
+  } else if ((digitalRead(MT) == 1) && (digitalRead(RT) == 0) && (digitalRead(LT) == 1)) {
+    analogWrite(enA, 200);
+    analogWrite(enB, 0);
+    delay(30);
+    analogWrite(enA, 200);
+    analogWrite(enB, 200);
+  }
+  
+  /*
+  if (distance <= 5) {
+    analogWrite(enA, 0);
+    analogWrite(enB, 0);
     DistanceServo.write(RightPos);
     delay(100); // wait for servo to position
     RightDistance = DistanceCheck();
@@ -128,6 +141,7 @@ void loop() {
       StartMillis = millis();
     }
   }
+  */
 }
 
 int DistanceCheck() {
