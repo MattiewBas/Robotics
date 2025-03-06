@@ -1,5 +1,5 @@
 const int RTracker = 9;
-const int LTracker = 10;
+const int LTracker = 8;
 
 // Motor Pins
 
@@ -21,33 +21,33 @@ void setup() {
   pinMode(in4, OUTPUT);
   pinMode(RTracker, INPUT);
   pinMode(LTracker, INPUT);
-
-  digitalWrite(in1, HIGH);
-  digitalWrite(in2, LOW);
-  digitalWrite(in3, HIGH);
-  digitalWrite(in4, LOW);
-
+  analogWrite(enA, 127);
+  analogWrite(enB, 127);
 }
 
 void loop() {
-  analogWrite(enA, 127);
-  analogWRite(enB, 127);
 
-  while (RTracker == 0 && LTracker == 1) {
+  forward();
+
+  while (digitalRead(RTracker) == 0 && digitalRead(LTracker) == 1) {
     // Left Turn
     left();
     //adjust
-    if (RTracker == 1 && LTracker == 0) {
+    if (digitalRead(RTracker) == 1 && digitalRead(LTracker) == 0) {
       right();
+    } else {
+      continue;
     }
   }
 
-  while (RTracker == 1 && LTracker == 0) {
+  while (digitalRead(RTracker) == 1 && digitalRead(LTracker) == 0) {
     // Right Turn
     right();
-    if (RTracker == 0 && LTracker == 1) {
-      Left();
-    } 
+    if (digitalRead(RTracker) == 0 && digitalRead(LTracker) == 1) {
+      left();
+    } else {
+      continue;
+    }
   }
 
 }
@@ -70,13 +70,6 @@ void left() {
 void right() {
   digitalWrite(in1, HIGH);
   digitalWrite(in2, LOW);
-  digitalWrite(in3, LOW);
-  digitalWrite(in4, HIGH);
-}
-
-void reverse() {
-  digitalWrite(in1, LOW);
-  digitalWrite(in2, HIGH);
   digitalWrite(in3, LOW);
   digitalWrite(in4, HIGH);
 }
